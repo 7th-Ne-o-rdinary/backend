@@ -5,7 +5,10 @@ plugins {
 }
 
 group = 'com.neordinary'
-version = '0.0.1-SNAPSHOT'
+
+bootJar {
+	archiveFileName = 'backend.jar'
+}
 
 java {
 	toolchain {

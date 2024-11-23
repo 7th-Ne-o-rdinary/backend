@@ -2,6 +2,7 @@ package com.neordinary.backend.domain.vote.controller;
 
 import java.util.List;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,8 +15,13 @@ import com.neordinary.backend.domain.vote.dto.VoteRequestDto;
 import com.neordinary.backend.domain.vote.dto.VoteResponseDto;
 import com.neordinary.backend.domain.vote.dto.VoteResultDto;
 import com.neordinary.backend.domain.vote.service.VoteService;
+import com.neordinary.backend.global.exception.ApiErrorResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -32,6 +38,20 @@ public class VoteController {
             - votedPeopleEmail에 투표받는 사람의 이메일 값
             - questionId에 질문의 ID값
             """)
+	@ApiResponse(
+		responseCode = "404",
+		description = "결과값 없음",
+		content = @Content(
+			mediaType = MediaType.APPLICATION_JSON_VALUE,
+			schema = @Schema(implementation = ApiErrorResponse.class),
+			examples = @ExampleObject(value = """
+                            {
+                                "status": "NOT_FOUND",
+                                "message": "투표 결과가 존재하지 않습니다."
+                            }
+                            """)
+		)
+	)
 	public ResponseEntity<VoteResponseDto.createVoteResultDto> createVote (@RequestBody VoteRequestDto.createVoteDto request){
 		VoteResponseDto.createVoteResultDto createVoteResultDto = voteService.createVote(request);
 		return ResponseEntity.ok(createVoteResultDto);
@@ -44,6 +64,36 @@ public class VoteController {
             - pathVariable로 questionId 값을 받음
             - 결과값으로 quesitionId, roomName(시상식 명),prizeName(상 이름), userName(유저 이름), prizeContent(시상 내용),voteCount(투표 수)
             """)
+	@ApiResponse(
+		responseCode = "400",
+		description = "잘못된 요청입니다",
+		content = @Content(
+			mediaType = MediaType.APPLICATION_JSON_VALUE,
+			schema = @Schema(implementation = ApiErrorResponse.class),
+			examples = @ExampleObject(value = """
+                            {
+                                "status": "BAD_REQUEST",
+                                "message": "잘못된 요청입니다."
+                            }
+                            """)
+		)
+
+	)
+	@ApiResponse(
+		responseCode = "404",
+		description = "존재하지 않는 참가자입니다.",
+		content = @Content(
+			mediaType = MediaType.APPLICATION_JSON_VALUE,
+			schema = @Schema(implementation = ApiErrorResponse.class),
+			examples = @ExampleObject(value = """
+                            {
+                                "status": "BAD_REQUEST",
+                                "message": "존재하지 않는 참가자입니다."
+                            }
+                            """)
+		)
+
+	)
 	public ResponseEntity<List<VoteResultDto>> voteResult (@PathVariable(name="questionId") Long questionId){
 		List<VoteResultDto> voteResultDto= voteService.getVoteResult(questionId);
 		return ResponseEntity.ok(voteResultDto);

@@ -3,6 +3,8 @@ package com.neordinary.backend.domain.vote.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.neordinary.backend.domain.room.entity.Room;
+import com.neordinary.backend.domain.vote.exception.NotFinishedVoteException;
 import org.springframework.stereotype.Service;
 
 import com.neordinary.backend.domain.participant.entity.Participant;
@@ -36,6 +38,18 @@ public class VoteServiceImpl implements VoteService{
 	@Override
 	public List<VoteResultDto> getVoteResult(Long questionId) {
 		List<VoteResultDto> results = voteRepository.findTopVoteResultByQuestionId(questionId);
+
+		Question question = questionRepository.findById(questionId)
+				.orElseThrow(() -> new VoteNotFoundException());
+
+		Room room = question.getRoom();
+		List<Participant> participants = participantRepository.findByRoomId(room.getId());
+		List<Vote> byQuestionId = voteRepository.findByQuestionId(questionId);
+
+		if (participants.size() > byQuestionId.size()) {
+			throw new NotFinishedVoteException();
+		}
+
 		if (results.isEmpty()) {
 			throw new VoteServiceException();
 		}

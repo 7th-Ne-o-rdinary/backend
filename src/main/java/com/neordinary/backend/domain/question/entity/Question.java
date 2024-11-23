@@ -28,16 +28,16 @@ public class Question {
 	private Long id;
 
 	@Column(nullable = false, columnDefinition = "TEXT")
-	private String question_content;
+	private String questionContent;
 
 	@Column(nullable = false)
-	private Integer question_num;
+	private Integer questionNum;
 
 	@Column(nullable = false)
-	private String prize_name;
+	private String prizeName;
 
 	@Column(nullable = false)
-	private String prize_content;
+	private String prizeContent;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="room_id")

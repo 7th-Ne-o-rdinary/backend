@@ -105,10 +105,10 @@ public class RoomServiceImpl implements RoomService {
     private List<Question> mappingQuestion(List<RequestQuestion> questionsList, Room room) {
         return questionsList.stream()
                 .map(reqQuestion -> Question.builder()
-                        .question_num(reqQuestion.getQuestion_num())
-                        .question_content(reqQuestion.getQuestion_content())
-                        .prize_name(reqQuestion.getPrize_name())
-                        .prize_content(reqQuestion.getPrize_content())
+                        .questionNum(reqQuestion.getQuestion_num())
+                        .questionContent(reqQuestion.getQuestion_content())
+                        .prizeName(reqQuestion.getPrize_name())
+                        .prizeContent(reqQuestion.getPrize_content())
                         .room(room) // Room 설정
                         .build())
                 .toList();

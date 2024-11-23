@@ -1,14 +1,19 @@
 package com.neordinary.backend.domain.vote.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import com.neordinary.backend.domain.participant.entity.Participant;
 import com.neordinary.backend.domain.participant.repository.ParticipantRepository;
 import com.neordinary.backend.domain.question.entity.Question;
 import com.neordinary.backend.domain.question.repository.QuestionRepository;
+import com.neordinary.backend.domain.room.repository.RoomRepository;
 import com.neordinary.backend.domain.vote.converter.VoteConverter;
 import com.neordinary.backend.domain.vote.dto.VoteRequestDto;
 import com.neordinary.backend.domain.vote.dto.VoteResponseDto;
+import com.neordinary.backend.domain.vote.dto.VoteResultDto;
 import com.neordinary.backend.domain.vote.entity.Vote;
 import com.neordinary.backend.domain.vote.exception.VoteNotFoundException;
 import com.neordinary.backend.domain.vote.repository.VoteRepository;
@@ -21,7 +26,14 @@ public class VoteServiceImpl implements VoteService{
 	private final VoteRepository voteRepository;
 	private final ParticipantRepository participantRepository;
 	private final QuestionRepository questionRepository;
+	private final RoomRepository roomRepository;
 
+
+
+	@Override
+	public List<VoteResultDto> getVoteResult(Long questionId) {
+		return voteRepository.findTopVoteResultByQuestionId(questionId);
+	}
 
 
 	@Override
@@ -38,6 +50,7 @@ public class VoteServiceImpl implements VoteService{
 		voteRepository.save(vote);
 		return VoteConverter.toVoteResult(vote);
 	}
+
 
 
 }

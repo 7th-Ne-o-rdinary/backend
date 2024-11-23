@@ -65,6 +65,11 @@ public class VoteController {
             - 결과값으로 quesitionId, roomName(시상식 명),prizeName(상 이름), userName(유저 이름), prizeContent(시상 내용),voteCount(투표 수)
             """)
 	@ApiResponse(
+		responseCode = "200",
+		description = "투표 결과 조회 성공",
+		useReturnTypeSchema = true
+	)
+	@ApiResponse(
 		responseCode = "400",
 		description = "잘못된 요청입니다",
 		content = @Content(

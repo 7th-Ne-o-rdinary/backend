@@ -2,8 +2,6 @@ package com.neordinary.backend.domain.question.dto;
 
 import java.util.List;
 
-import com.neordinary.backend.domain.question.entity.Question;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,8 +30,8 @@ public class QuestionResponseDto {
 	@NoArgsConstructor
 	@AllArgsConstructor
 	public static class QuestionDto {
-		private Integer sequence;
-		private String question_content;
+		private Long questionId;
+		private String questionContent;
 
 	}
 

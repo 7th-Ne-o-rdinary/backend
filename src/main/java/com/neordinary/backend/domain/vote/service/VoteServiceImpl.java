@@ -15,7 +15,9 @@ import com.neordinary.backend.domain.vote.dto.VoteRequestDto;
 import com.neordinary.backend.domain.vote.dto.VoteResponseDto;
 import com.neordinary.backend.domain.vote.dto.VoteResultDto;
 import com.neordinary.backend.domain.vote.entity.Vote;
+import com.neordinary.backend.domain.vote.exception.VoteBadRequestException;
 import com.neordinary.backend.domain.vote.exception.VoteNotFoundException;
+import com.neordinary.backend.domain.vote.exception.VoteServiceException;
 import com.neordinary.backend.domain.vote.repository.VoteRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -32,12 +34,19 @@ public class VoteServiceImpl implements VoteService{
 
 	@Override
 	public List<VoteResultDto> getVoteResult(Long questionId) {
-		return voteRepository.findTopVoteResultByQuestionId(questionId);
+		List<VoteResultDto> results = voteRepository.findTopVoteResultByQuestionId(questionId);
+		if (results.isEmpty()) {
+			throw new VoteServiceException();
+		}
+		return results;
 	}
 
 
 	@Override
 	public VoteResponseDto.createVoteResultDto createVote(VoteRequestDto.createVoteDto request){
+		if (request.getVotePeopleEmail().equals(request.getVotedPeopleEmail())) {
+			throw new VoteBadRequestException();
+		}
 		Participant votePeople = participantRepository.findByUserEmail(request.getVotePeopleEmail())
 			.orElseThrow(() -> new VoteNotFoundException());
 

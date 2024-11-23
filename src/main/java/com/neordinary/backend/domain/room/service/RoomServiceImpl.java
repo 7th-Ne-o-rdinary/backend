@@ -7,6 +7,7 @@ import com.neordinary.backend.domain.question.entity.Question;
 import com.neordinary.backend.domain.question.repository.QuestionRepository;
 import com.neordinary.backend.domain.room.dto.RequestCreateRoom;
 import com.neordinary.backend.domain.room.dto.StartRoomDto;
+import com.neordinary.backend.domain.room.dto.RoomCodeDto;
 import com.neordinary.backend.domain.room.entity.Room;
 import com.neordinary.backend.domain.room.repository.RoomRepository;
 import com.neordinary.backend.domain.user.domain.User;
@@ -27,7 +28,7 @@ public class RoomServiceImpl implements RoomService {
     private final ParticipantRepository participantRepository;
 
     @Override
-    public String create(User user, RequestCreateRoom requestCreateRoom) {
+    public RoomCodeDto create(User user, RequestCreateRoom requestCreateRoom) {
 
         Room room = requestCreateRoom.toEntity();
         room.setCode(createAccountNum());
@@ -37,7 +38,9 @@ public class RoomServiceImpl implements RoomService {
         List<Question> questions = mappingQuestion(requestCreateRoom.getQuestions(), room);
         questionRepository.saveAll(questions);
 
-        return room.getCode();
+        return RoomCodeDto.builder()
+                .code(room.getCode())
+                .build();
     }
 
     @Override
@@ -68,7 +71,12 @@ public class RoomServiceImpl implements RoomService {
     }
 
     private String createAccountNum() {
-        return Long.toString(ThreadLocalRandom.current().nextLong(100000L, 900000L));
+        String accountNum = Long.toString(ThreadLocalRandom.current().nextLong(1000L, 9999L));
+        while (roomRepository.findByCode(accountNum).isPresent()) {
+            accountNum = Long.toString(ThreadLocalRandom.current().nextLong(1000L, 9999L));
+        }
+
+        return accountNum;
     }
 
     private Room checkRoomCode(String code) {

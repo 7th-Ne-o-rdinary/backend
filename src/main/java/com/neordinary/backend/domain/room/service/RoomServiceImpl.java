@@ -38,7 +38,6 @@ public class RoomServiceImpl implements RoomService {
     @Override
     @Transactional
     public RoomCodeDto create(User user, RequestCreateRoom requestCreateRoom) {
-
         Room room = requestCreateRoom.toEntity();
         room.setCode(createAccountNum());
         room.setUser(user);
@@ -46,6 +45,8 @@ public class RoomServiceImpl implements RoomService {
 
         List<Question> questions = mappingQuestion(requestCreateRoom.getQuestions(), room);
         questionRepository.saveAll(questions);
+
+        participantRepository.save(mappingParticipant(user, room));
 
         return RoomCodeDto.builder()
                 .code(room.getCode())

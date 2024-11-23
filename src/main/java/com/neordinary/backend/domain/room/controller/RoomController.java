@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +49,7 @@ public class RoomController {
     )
     @PreAuthorize("isAuthenticated()")
     @SecurityRequirement(name = "access-token")
-    public RoomCodeDto create(@CurrentUser User user, @RequestBody final RequestCreateRoom requestCreateRoom) {
+    public RoomCodeDto create(@CurrentUser User user, @Valid @RequestBody final RequestCreateRoom requestCreateRoom) {
         return roomService.create(user, requestCreateRoom);
     }
 

@@ -24,10 +24,10 @@ public class QuestionController {
 
 
 
-	@GetMapping("/list/{roomId}")
+	@GetMapping("/list/{questionId}")
 	@Operation(summary="질문 목록 조회 API")
-	public ResponseEntity<QuestionResponseDto.questionListDto> questionList(@PathVariable(name="roomId") Long roomId){
-		QuestionResponseDto.questionListDto questionList =questionService.getQuestionList(roomId);
+	public ResponseEntity<QuestionResponseDto.questionListDto> questionList(@PathVariable(name="questionId") Long questionId){
+		QuestionResponseDto.questionListDto questionList =questionService.getQuestionList(questionId);
 		return ResponseEntity.ok(questionList);
 	}
 

@@ -10,6 +10,9 @@ public class VoteResponseDto {
 	@NoArgsConstructor
 	@AllArgsConstructor
 	public static class createVoteResultDto{
+		Long votePeopleId;
+		Long votedPeopleId;
+
 
 	}
 

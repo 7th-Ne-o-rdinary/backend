@@ -52,9 +52,11 @@ public class SecurityConfig {
                 "/v3/api-docs/**",
                 "/swagger-resources/**",
 
-                "/api/v1/auth/**",
-                "/api/v1/**",
-                "/question/**",
+                "/api/v1/auth/signup",
+                "/api/v1/auth/login",
+                "/api/v1/vote/result/**",
+                "/api/v1/rooms/participants",
+                "/api/v1/question/list/**",
 
                 "/ws/**"
         ).permitAll()

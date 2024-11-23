@@ -25,14 +25,25 @@ public class VoteController {
 	private final VoteService voteService;
 
 	@PostMapping("/")
-	@Operation(summary="투표 API")
+	@Operation(summary="투표 API", description = """
+            # 투표 진행 API
+
+            - votePeopleEmail에 투표하는 사람의 이메일 값
+            - votedPeopleEmail에 투표받는 사람의 이메일 값
+            - questionId에 질문의 ID값
+            """)
 	public ResponseEntity<VoteResponseDto.createVoteResultDto> createVote (@RequestBody VoteRequestDto.createVoteDto request){
 		VoteResponseDto.createVoteResultDto createVoteResultDto = voteService.createVote(request);
 		return ResponseEntity.ok(createVoteResultDto);
 	}
 
 	@GetMapping("/result/{questionId}")
-	@Operation(summary="결과 조회 API")
+	@Operation(summary="결과 조회 API", description = """
+            # 투표 결과 조회 API
+
+            - pathVariable로 questionId 값을 받음
+            - 결과값으로 quesitionId, roomName(시상식 명),prizeName(상 이름), userName(유저 이름), prizeContent(시상 내용),voteCount(투표 수)
+            """)
 	public ResponseEntity<List<VoteResultDto>> voteResult (@PathVariable(name="questionId") Long questionId){
 		List<VoteResultDto> voteResultDto= voteService.getVoteResult(questionId);
 		return ResponseEntity.ok(voteResultDto);

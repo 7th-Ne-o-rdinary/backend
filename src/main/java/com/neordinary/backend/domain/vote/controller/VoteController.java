@@ -26,6 +26,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -64,7 +65,7 @@ public class VoteController {
 		description = "투표 성공",
 		useReturnTypeSchema = true
 	)
-	public ResponseEntity<VoteResponseDto.createVoteResultDto> createVote (@CurrentUser User user, @RequestBody VoteRequestDto.createVoteDto request){
+	public ResponseEntity<VoteResponseDto.createVoteResultDto> createVote (@CurrentUser User user, @Valid @RequestBody VoteRequestDto.createVoteDto request){
 		VoteResponseDto.createVoteResultDto createVoteResultDto = voteService.createVote(user, request);
 		return ResponseEntity.ok(createVoteResultDto);
 	}

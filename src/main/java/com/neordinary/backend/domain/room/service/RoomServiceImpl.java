@@ -12,6 +12,7 @@ import com.neordinary.backend.domain.room.dto.RoomCodeDto;
 import com.neordinary.backend.domain.room.entity.Room;
 import com.neordinary.backend.domain.room.repository.RoomRepository;
 import com.neordinary.backend.domain.user.domain.User;
+import com.neordinary.backend.domain.user.exception.CheckDuplicatedUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,6 +55,7 @@ public class RoomServiceImpl implements RoomService {
     @Transactional
     public void join(User user, String code) {
 
+        validateDuplicateUser(user);
         Room room = checkRoomCodeAndStatus(code);
 
         Participant participant = mappingParticipant(user, room);
@@ -78,6 +80,12 @@ public class RoomServiceImpl implements RoomService {
     private void validateChief(User user, Room room) {
         if (!room.getUser().getId().equals(user.getId())) {
             throw new IllegalArgumentException("권한이 없는 방입니다.");
+        }
+    }
+
+    private void validateDuplicateUser(User user) {
+        if(participantRepository.existsByUserId(user.getId())){
+            throw new CheckDuplicatedUser();
         }
     }
 

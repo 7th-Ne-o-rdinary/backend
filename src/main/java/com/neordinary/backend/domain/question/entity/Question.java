@@ -1,6 +1,7 @@
 package com.neordinary.backend.domain.question.entity;
 
 import com.neordinary.backend.domain.room.entity.Room;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -42,7 +43,9 @@ public class Question {
 	@JoinColumn(name="room_id")
 	private Room room;
 
+
     public void setRoom(Room room) {
 		this.room = room;
     }
+
 }

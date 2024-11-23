@@ -2,6 +2,21 @@ spring:
   application:
     name: "neordinary"
 
+jwt:
+  secret:
+    access: VTZWa1F6ZzBOMk15TldJM1ptRTVZbVEzTWpKaU4yVTFZamMwTTJVMU1UUTJPR1ppTmpReU5EVTJNelEyTnc
+    refresh: WVRrNU5ETmpZVGN5WWpFd05EYzJNMkppWWpZeU1UUmxZekUwTkRFNU1XSTJaV1l3TnpFeU5qYzFNRFEx
+
+oauth:
+  naver:
+    client-id: LXAke4cz8pwKThYvbGQK
+    client-secret: PruqII0pi7
+    state: naver
+    url:
+      auth: https://nid.naver.com
+      api: https://openapi.naver.com
+      redirect: http://localhost:8080/api/v1/auth/naver/callback
+
 ---
 spring:
   datasource:

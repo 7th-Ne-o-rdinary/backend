@@ -1,5 +1,6 @@
 package com.neordinary.backend.domain.room.service;
 
+import com.neordinary.backend.domain.question.dto.RequestQuestion;
 import com.neordinary.backend.domain.question.entity.Question;
 import com.neordinary.backend.domain.question.repository.QuestionRepository;
 import com.neordinary.backend.domain.room.dto.RequestCreateRoom;
@@ -21,19 +22,31 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public String create(User user, RequestCreateRoom requestCreateRoom) {
+
         Room room = requestCreateRoom.toEntity();
         room.setCode(createAccountNum());
         room.setUser(user);
         roomRepository.save(room);
 
-        List<Question> questions = requestCreateRoom.getQuestions();
-        questions.forEach(question -> question.setRoom(room));
-        questionRepository.saveAll(requestCreateRoom.getQuestions());
+        List<Question> questions = mappingQuestion(requestCreateRoom.getQuestions(), room);
+        questionRepository.saveAll(questions);
 
         return room.getCode();
     }
 
     private String createAccountNum() {
         return Long.toString(ThreadLocalRandom.current().nextLong(100000L, 900000L));
+    }
+
+    private List<Question> mappingQuestion(List<RequestQuestion> questionsList, Room room) {
+        return questionsList.stream()
+                .map(reqQuestion -> Question.builder()
+                        .question_num(reqQuestion.getQuestion_num())
+                        .question_content(reqQuestion.getQuestion_content())
+                        .prize_name(reqQuestion.getPrize_name())
+                        .prize_content(reqQuestion.getPrize_content())
+                        .room(room) // Room 설정
+                        .build())
+                .toList();
     }
 }

@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.neordinary.backend.domain.user.domain.User;
 import com.neordinary.backend.domain.vote.dto.VoteRequestDto;
 import com.neordinary.backend.domain.vote.dto.VoteResponseDto;
 import com.neordinary.backend.domain.vote.dto.VoteResultDto;
 import com.neordinary.backend.domain.vote.service.VoteService;
 import com.neordinary.backend.global.exception.ApiErrorResponse;
+import com.neordinary.backend.global.jwt.CurrentUser;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -52,8 +54,8 @@ public class VoteController {
                             """)
 		)
 	)
-	public ResponseEntity<VoteResponseDto.createVoteResultDto> createVote (@RequestBody VoteRequestDto.createVoteDto request){
-		VoteResponseDto.createVoteResultDto createVoteResultDto = voteService.createVote(request);
+	public ResponseEntity<VoteResponseDto.createVoteResultDto> createVote (@CurrentUser User user, @RequestBody VoteRequestDto.createVoteDto request){
+		VoteResponseDto.createVoteResultDto createVoteResultDto = voteService.createVote(user, request);
 		return ResponseEntity.ok(createVoteResultDto);
 	}
 

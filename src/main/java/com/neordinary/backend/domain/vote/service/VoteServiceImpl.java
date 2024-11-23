@@ -10,6 +10,7 @@ import com.neordinary.backend.domain.participant.repository.ParticipantRepositor
 import com.neordinary.backend.domain.question.entity.Question;
 import com.neordinary.backend.domain.question.repository.QuestionRepository;
 import com.neordinary.backend.domain.room.repository.RoomRepository;
+import com.neordinary.backend.domain.user.domain.User;
 import com.neordinary.backend.domain.vote.converter.VoteConverter;
 import com.neordinary.backend.domain.vote.dto.VoteRequestDto;
 import com.neordinary.backend.domain.vote.dto.VoteResponseDto;
@@ -43,11 +44,11 @@ public class VoteServiceImpl implements VoteService{
 
 
 	@Override
-	public VoteResponseDto.createVoteResultDto createVote(VoteRequestDto.createVoteDto request){
-		if (request.getVotePeopleEmail().equals(request.getVotedPeopleEmail())) {
+	public VoteResponseDto.createVoteResultDto createVote(User user, VoteRequestDto.createVoteDto request){
+		if (user.getEmail().equals(request.getVotedPeopleEmail())) {
 			throw new VoteBadRequestException();
 		}
-		Participant votePeople = participantRepository.findByUserEmail(request.getVotePeopleEmail())
+		Participant votePeople = participantRepository.findByUserEmail(user.getEmail())
 			.orElseThrow(() -> new VoteNotFoundException());
 
 		Participant votedPeople = participantRepository.findByUserEmail(request.getVotedPeopleEmail())

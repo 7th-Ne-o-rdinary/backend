@@ -1,6 +1,8 @@
 package com.neordinary.backend.domain.question.converter;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.neordinary.backend.domain.question.dto.QuestionRequestDto;
 import com.neordinary.backend.domain.question.dto.QuestionResponseDto;
@@ -24,9 +26,16 @@ public class QuestionConverter {
 			.build();
 	}
 
-	public static QuestionResponseDto.questionListDto toQuestionList (Optional<Room> room){
+	public static QuestionResponseDto.questionListDto toQuestionList(Optional<Room> room) {
+		List<QuestionResponseDto.QuestionDto> questionDtos = room.get().getQuestionsList().stream()
+			.map(question -> new QuestionResponseDto.QuestionDto(
+				question.getId(),
+				question.getQuestion_content()
+			))
+			.collect(Collectors.toList());
+
 		return QuestionResponseDto.questionListDto.builder()
-			.questionList(room.get().getQuestionsList())
+			.questionList(questionDtos)
 			.build();
 	}
 }

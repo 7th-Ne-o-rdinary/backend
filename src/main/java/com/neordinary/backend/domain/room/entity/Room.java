@@ -8,10 +8,14 @@ import java.util.List;
 import com.neordinary.backend.domain.question.entity.Question;
 
 
+
 import com.neordinary.backend.domain.user.domain.User;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -38,8 +42,10 @@ public class Room {
     @JoinColumn(name = "user_id")
     private User user;
 
+
 	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
 	private List<Question> questionsList = new ArrayList<>();
+
 
     public void setCode(String code) {
         this.code = code;

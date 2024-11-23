@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 public class QuestionResponseDto {
 	@Builder
@@ -26,7 +25,20 @@ public class QuestionResponseDto {
 	@NoArgsConstructor
 	@AllArgsConstructor
 	public static class questionListDto{
-		List<Question> questionList;
+		List<QuestionDto> questionList;
 	}
+
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class QuestionDto {
+		private Long id;
+		private String question_content;
+
+	}
+
+
+
+
 
 }

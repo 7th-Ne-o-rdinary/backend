@@ -31,10 +31,10 @@ public class VoteController {
 		return ResponseEntity.ok(createVoteResultDto);
 	}
 
-	@GetMapping("/result/{roomId}")
+	@GetMapping("/result/{questionId}")
 	@Operation(summary="결과 조회 API")
-	public ResponseEntity<List<VoteResultDto>> voteResult (@PathVariable(name="roomId") Long roomId){
-		List<VoteResultDto> voteResultDto= voteService.getVoteResult(roomId);
+	public ResponseEntity<List<VoteResultDto>> voteResult (@PathVariable(name="questionId") Long questionId){
+		List<VoteResultDto> voteResultDto= voteService.getVoteResult(questionId);
 		return ResponseEntity.ok(voteResultDto);
 	}
 

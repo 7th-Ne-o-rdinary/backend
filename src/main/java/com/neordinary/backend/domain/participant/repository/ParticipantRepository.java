@@ -1,7 +1,12 @@
 package com.neordinary.backend.domain.participant.repository;
 
-import com.neordinary.backend.domain.participant.entity.Participant;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ParticipantRepository extends JpaRepository<Participant, Long> {
+import com.neordinary.backend.domain.participant.entity.Participant;
+
+public interface ParticipantRepository extends JpaRepository<Participant,Long> {
+
+	Optional<Participant> findByUserEmail(String email);
 }

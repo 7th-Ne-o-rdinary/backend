@@ -10,7 +10,9 @@ import com.neordinary.backend.domain.room.dto.RequestCreateRoom;
 import com.neordinary.backend.domain.room.dto.StartRoomDto;
 import com.neordinary.backend.domain.room.dto.RoomCodeDto;
 import com.neordinary.backend.domain.room.entity.Room;
+import com.neordinary.backend.domain.room.exception.InvalidAuthorizationException;
 import com.neordinary.backend.domain.room.exception.InvalidRoomForParticipateException;
+import com.neordinary.backend.domain.room.exception.InvalidRoomForStartException;
 import com.neordinary.backend.domain.room.exception.RoomNotFoundException;
 import com.neordinary.backend.domain.room.repository.RoomRepository;
 import com.neordinary.backend.domain.user.domain.User;
@@ -66,8 +68,10 @@ public class RoomServiceImpl implements RoomService {
     @Override
     @Transactional
     public StartRoomDto start(User user, String code) {
-
         Room room = checkRoomCode(code);
+        if (!STATUS.equals(room.getStatus())) {
+            throw new InvalidRoomForStartException(room.getStatus());
+        }
         validateChief(user, room);
         room.setStatus(IN_PROGRESS);
 
@@ -80,7 +84,7 @@ public class RoomServiceImpl implements RoomService {
 
     private void validateChief(User user, Room room) {
         if (!room.getUser().getId().equals(user.getId())) {
-            throw new IllegalArgumentException("권한이 없는 방입니다.");
+            throw new InvalidAuthorizationException();
         }
     }
 

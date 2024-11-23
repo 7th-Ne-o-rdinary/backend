@@ -128,7 +128,7 @@ public class RoomController {
 	}
 
     @PatchMapping
-    @Operation(summary = "방 시작", description = """
+    @Operation(summary = "방 투표 활성화", description = """
             # 방 시작
                         
             ## 응답
@@ -136,9 +136,47 @@ public class RoomController {
             - 방 이름 ex) 1번 시상식
             , 방 상태 반환 ex) 진행 중
             """)
+    @ApiResponse(
+            responseCode = "200",
+            description = "방 시작 성공",
+            useReturnTypeSchema = true
+    )
+    @ApiResponse(
+            responseCode = "400",
+            description = "방에 참여할 수 없는 상태",
+            content = @Content(
+                    mediaType = "application/json",
+                    examples = @ExampleObject(
+                            value = """
+        {
+          "status": "BAD_REQUEST",
+          "message": "시작 전 상태가 아닌 방입니다."
+        }
+        """
+                    )
+            )
+    )
+    @ApiResponse(
+            responseCode = "403",
+            description = "권한 없음",
+            content = @Content(
+                    mediaType = "application/json",
+                    examples = @ExampleObject(
+                            value = """
+        {
+          "status": "FORBIDDEN",
+          "message": "권한이 없습니다."
+        }
+        """
+                    )
+            )
+    )
     @PreAuthorize("isAuthenticated()")
     @SecurityRequirement(name = "access-token")
-    public StartRoomDto start(@CurrentUser User user, @RequestParam("code") String code){
+    public StartRoomDto start(@CurrentUser User user,
+                              @RequestParam("code")
+                              @Pattern(regexp = "^\\d{4}$", message = "code는 4자리 숫자여야 합니다")
+                              String code){
         return roomService.start(user, code);
     }
 }

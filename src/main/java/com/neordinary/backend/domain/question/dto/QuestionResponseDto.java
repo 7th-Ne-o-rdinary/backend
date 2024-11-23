@@ -32,7 +32,7 @@ public class QuestionResponseDto {
 	@NoArgsConstructor
 	@AllArgsConstructor
 	public static class QuestionDto {
-		private Long id;
+		private Integer sequence;
 		private String question_content;
 
 	}

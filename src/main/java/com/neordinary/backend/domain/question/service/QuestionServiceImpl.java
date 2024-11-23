@@ -2,6 +2,7 @@ package com.neordinary.backend.domain.question.service;
 
 import java.util.Optional;
 
+import com.neordinary.backend.domain.room.exception.RoomNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.neordinary.backend.domain.question.converter.QuestionConverter;
@@ -21,7 +22,8 @@ public class QuestionServiceImpl implements QuestionService{
 	@Override
 	@Transactional
 	public QuestionResponseDto.questionListDto getQuestionList(String code){
-		Optional<Room> room = roomRepository.findByCode(code);
+		Room room = roomRepository.findByCode(code)
+				.orElseThrow(() -> new RoomNotFoundException(code));
 		return QuestionConverter.toQuestionList(room);
 	}
 }

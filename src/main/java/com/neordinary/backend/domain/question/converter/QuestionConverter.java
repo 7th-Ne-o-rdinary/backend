@@ -26,10 +26,10 @@ public class QuestionConverter {
 			.build();
 	}
 
-	public static QuestionResponseDto.questionListDto toQuestionList(Optional<Room> room) {
-		List<QuestionResponseDto.QuestionDto> questionDtos = room.get().getQuestionsList().stream()
+	public static QuestionResponseDto.questionListDto toQuestionList(Room room) {
+		List<QuestionResponseDto.QuestionDto> questionDtos = room.getQuestionsList().stream()
 			.map(question -> new QuestionResponseDto.QuestionDto(
-				question.getId(),
+				question.getQuestionNum(),
 				question.getQuestionContent()
 			))
 			.collect(Collectors.toList());

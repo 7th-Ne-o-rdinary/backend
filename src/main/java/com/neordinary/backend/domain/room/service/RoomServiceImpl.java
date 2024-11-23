@@ -10,6 +10,8 @@ import com.neordinary.backend.domain.room.dto.RequestCreateRoom;
 import com.neordinary.backend.domain.room.dto.StartRoomDto;
 import com.neordinary.backend.domain.room.dto.RoomCodeDto;
 import com.neordinary.backend.domain.room.entity.Room;
+import com.neordinary.backend.domain.room.exception.InvalidRoomForParticipateException;
+import com.neordinary.backend.domain.room.exception.RoomNotFoundException;
 import com.neordinary.backend.domain.room.repository.RoomRepository;
 import com.neordinary.backend.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -83,13 +85,13 @@ public class RoomServiceImpl implements RoomService {
 
     private Room checkRoomCode(String code) {
         return roomRepository.findByCode(code)
-                .orElseThrow(() -> new IllegalArgumentException(IN_AVAILABLE_CODE + code));
+                .orElseThrow(() -> new RoomNotFoundException(code));
     }
 
     private Room checkRoomCodeAndStatus(String code) {
         Room room = checkRoomCode(code);
         if (!STATUS.equals(room.getStatus())) {
-            throw new IllegalStateException(FORBIDDEN_STATUS + room.getStatus());
+            throw new InvalidRoomForParticipateException(FORBIDDEN_STATUS + room.getStatus());
         }
         return room;
     }

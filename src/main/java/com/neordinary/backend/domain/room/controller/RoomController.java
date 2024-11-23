@@ -8,11 +8,15 @@ import com.neordinary.backend.domain.room.service.RoomService;
 import com.neordinary.backend.domain.user.domain.User;
 import com.neordinary.backend.global.jwt.CurrentUser;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.constraints.Pattern;
 
 import java.util.List;
 
@@ -56,17 +60,52 @@ public class RoomController {
                         
             ## 응답
                         
-            - 방 참가 완료시 "방 참가 성공" 반환
-            - 방 참가 실패시 ex) "방에 참여할 수 없는 상태입니다: 진행 중"
+            - 방 참가 완료시 `200` 코드
+            - 방 참가 실패시 `400` 코드와 에러메시지 반환
+            - 방 조회 실패시 `404` 코드와 에러메시지 반환
             """)
     @ApiResponse(
             responseCode = "200",
             description = "방 참가 성공",
             useReturnTypeSchema = true
     )
+    @ApiResponse(
+            responseCode = "400",
+            description = "방에 참여할 수 없는 상태",
+            content = @Content(
+                    mediaType = "application/json",
+                    examples = @ExampleObject(
+                            value = """
+        {
+          "status": "BAD_REQUEST",
+          "message": "방에 참여할 수 없는 상태입니다: 진행 중"
+        }
+        """
+                    )
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "방을 찾을 수 없음",
+            content = @Content(
+                    mediaType = "application/json",
+                    examples = @ExampleObject(
+                            value = """
+        {
+          "status": "NOT_FOUND",
+          "message": "1111 방을 찾을 수 없습니다."
+        }
+        """
+                    )
+            )
+    )
     @PreAuthorize("isAuthenticated()")
     @SecurityRequirement(name = "access-token")
-    public void join(@CurrentUser User user, @RequestParam("code") String code){
+    public void join(
+            @CurrentUser User user,
+            @RequestParam("code")
+            @Pattern(regexp = "^\\d{4}$", message = "code는 4자리 숫자여야 합니다")
+            String code){
         roomService.join(user, code);
     }
 

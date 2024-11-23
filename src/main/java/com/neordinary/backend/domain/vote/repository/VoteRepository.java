@@ -30,4 +30,5 @@ public interface VoteRepository extends JpaRepository<Vote, Long> {
 	List<VoteResultDto> findTopVoteResultByQuestionId(@Param("questionId") Long questionId);
 
 
+	List<Vote> findByQuestionId(Long questionId);
 }

@@ -9,12 +9,12 @@ import com.neordinary.backend.domain.user.domain.User;
 import java.util.List;
 
 public interface RoomService {
+
     RoomCodeDto create(User user, RequestCreateRoom requestCreateRoom);
 
     void join(User user, String code);
 
     List<ParticipantDto> getParticipants(String code);
 
-    StartRoomDto start(User user, String code);
-  
+    StartRoomDto start(User user, String code); 
 }

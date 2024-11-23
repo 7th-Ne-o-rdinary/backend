@@ -1,5 +1,7 @@
 package com.neordinary.backend.domain.question.entity;
 
+import com.neordinary.backend.domain.room.entity.Room;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -39,7 +41,7 @@ public class Question {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="room_id")
-	private com.neordinary.backend.room.entity.Room room;
+	private Room room;
 
 
 

@@ -1,5 +1,10 @@
-package com.neordinary.backend.room.entity;
+package com.neordinary.backend.domain.room.entity;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.neordinary.backend.domain.question.entity.Question;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,6 +28,10 @@ public class Room {
 
 	@Column(nullable = false)
 	private String status;
+
+	@OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+	private List<Question> questionsList = new ArrayList<>();
+
 
 	//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
 	//    @JoinColumn(name = "user_id")

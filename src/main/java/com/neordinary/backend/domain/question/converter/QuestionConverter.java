@@ -1,8 +1,12 @@
 package com.neordinary.backend.domain.question.converter;
 
+import java.util.Optional;
+
 import com.neordinary.backend.domain.question.dto.QuestionRequestDto;
 import com.neordinary.backend.domain.question.dto.QuestionResponseDto;
 import com.neordinary.backend.domain.question.entity.Question;
+import com.neordinary.backend.domain.room.entity.Room;
+
 
 public class QuestionConverter {
 	public static Question toQuestion(QuestionRequestDto request, Long roomId){
@@ -17,6 +21,12 @@ public class QuestionConverter {
 		return QuestionResponseDto.CreateQuestionResultDto.builder()
 			.id(question.getId())
 			.question_content(question.getQuestion_content())
+			.build();
+	}
+
+	public static QuestionResponseDto.questionListDto toQuestionList (Optional<Room> room){
+		return QuestionResponseDto.questionListDto.builder()
+			.questionList(room.get().getQuestionsList())
 			.build();
 	}
 }

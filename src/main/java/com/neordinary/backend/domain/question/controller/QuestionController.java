@@ -2,6 +2,7 @@ package com.neordinary.backend.domain.question.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +13,7 @@ import com.neordinary.backend.domain.question.dto.QuestionRequestDto;
 import com.neordinary.backend.domain.question.dto.QuestionResponseDto;
 import com.neordinary.backend.domain.question.service.QuestionService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -32,6 +34,13 @@ public class QuestionController {
 	public ResponseEntity<Void> removeQuestion (@RequestBody Long questionId){
 		questionService.deleteQuestion(questionId);
 		return ResponseEntity.noContent().build();
+	}
+
+	@GetMapping("/list/{roomId}")
+	@Operation(summary="질문 목록 조회 API")
+	public ResponseEntity<QuestionResponseDto.questionListDto> questionList(@PathVariable(name="roomId") Long roomId){
+		QuestionResponseDto.questionListDto questionList =questionService.getQuestionList(roomId);
+		return ResponseEntity.ok(questionList);
 	}
 
 

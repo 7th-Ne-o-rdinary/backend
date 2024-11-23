@@ -1,5 +1,9 @@
 package com.neordinary.backend.domain.question.dto;
 
+import java.util.List;
+
+import com.neordinary.backend.domain.question.entity.Question;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,4 +21,12 @@ public class QuestionResponseDto {
 
 
 	}
+	@Builder
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class questionListDto{
+		List<Question> questionList;
+	}
+
 }

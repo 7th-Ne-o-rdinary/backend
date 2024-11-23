@@ -1,5 +1,6 @@
 package com.neordinary.backend.domain.room.service;
 
+import com.neordinary.backend.domain.participant.dto.ParticipantDto;
 import com.neordinary.backend.domain.participant.entity.Participant;
 import com.neordinary.backend.domain.participant.repository.ParticipantRepository;
 import com.neordinary.backend.domain.question.dto.RequestQuestion;
@@ -118,5 +119,15 @@ public class RoomServiceImpl implements RoomService {
                 .user(user)
                 .room(room)
                 .build();
+    }
+
+    @Override
+    public List<ParticipantDto> getParticipants(String code) {
+        Room room = checkRoomCode(code);
+        List<Participant> participants = participantRepository.findByRoomId(room.getId());
+
+        return participants.stream()
+                .map(ParticipantDto::fromEntity)
+                .toList();
     }
 }

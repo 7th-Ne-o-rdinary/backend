@@ -1,5 +1,6 @@
 package com.neordinary.backend.domain.room.controller;
 
+import com.neordinary.backend.domain.participant.dto.ParticipantDto;
 import com.neordinary.backend.domain.room.dto.RequestCreateRoom;
 import com.neordinary.backend.domain.room.dto.StartRoomDto;
 import com.neordinary.backend.domain.room.dto.RoomCodeDto;
@@ -13,13 +14,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/rooms")
 @RequiredArgsConstructor
 public class RoomController {
 
     private final RoomService roomService;
-
 
     @PostMapping
     @Operation(summary = "방 생성", description = """
@@ -67,6 +69,23 @@ public class RoomController {
     public void join(@CurrentUser User user, @RequestParam("code") String code){
         roomService.join(user, code);
     }
+
+    @GetMapping("/participants")
+    @Operation(summary = "방 참가자 조회", description = """
+            # 방 참가자 조회
+                        
+            ## 응답
+                        
+            - 참가자 조회 성공 시 `200` 코드를 반환합니다.
+            """)
+    @ApiResponse(
+            responseCode = "200",
+            description = "방 참가자 조회 성공",
+            useReturnTypeSchema = true
+    )
+    public List<ParticipantDto> getParticipants(@RequestParam("code") String code){
+        return roomService.getParticipants(code);
+	}
 
     @PatchMapping
     @Operation(summary = "방 시작", description = """

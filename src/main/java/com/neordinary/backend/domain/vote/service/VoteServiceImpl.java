@@ -1,6 +1,7 @@
 package com.neordinary.backend.domain.vote.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.neordinary.backend.domain.room.entity.Room;
@@ -59,17 +60,17 @@ public class VoteServiceImpl implements VoteService{
 
 	@Override
 	public VoteResponseDto.createVoteResultDto createVote(User user, VoteRequestDto.createVoteDto request){
+		Question question = questionRepository.findById(request.getQuestionId())
+			.orElseThrow(() -> new VoteNotFoundException());
 		if (user.getEmail().equals(request.getVotedPeopleEmail())) {
 			throw new VoteBadRequestException();
 		}
-		Participant votePeople = participantRepository.findByUserEmail(user.getEmail())
+		Participant votePeople = participantRepository.findByUserEmailAndRoomId(user.getEmail(), question.getRoom().getId())
 			.orElseThrow(() -> new VoteNotFoundException());
 
-		Participant votedPeople = participantRepository.findByUserEmail(request.getVotedPeopleEmail())
+		Participant votedPeople = participantRepository.findByUserEmailAndRoomId(request.getVotedPeopleEmail(),question.getRoom().getId())
 			.orElseThrow(() -> new VoteNotFoundException());
 
-		Question question = questionRepository.findById(request.getQuestionId())
-			.orElseThrow(() -> new VoteNotFoundException());
 		Vote vote = VoteConverter.toVote(votePeople, votedPeople, question);
 		voteRepository.save(vote);
 		return VoteConverter.toVoteResult(vote);

@@ -9,7 +9,7 @@ import com.neordinary.backend.domain.participant.entity.Participant;
 
 public interface ParticipantRepository extends JpaRepository<Participant,Long> {
 
-	Optional<Participant> findByUserEmail(String email);
+	Optional<Participant> findByUserEmailAndRoomId(String email, Long roomId);
 
 	List<Participant> findByRoomId(Long id);
 }

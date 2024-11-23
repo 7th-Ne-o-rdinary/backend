@@ -5,4 +5,6 @@ import com.neordinary.backend.domain.user.domain.User;
 
 public interface RoomService {
     String create(User user, RequestCreateRoom requestCreateRoom);
+
+    void join(User user, String code);
 }

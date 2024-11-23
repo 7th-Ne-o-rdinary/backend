@@ -22,19 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class QuestionController {
 	private final QuestionService questionService;
 
-	@PostMapping("/create/{roomId}")
-	//@Operation(summary="질문 생성 API")
-	public ResponseEntity<QuestionResponseDto.CreateQuestionResultDto> createQuestion(@RequestBody QuestionRequestDto request, @PathVariable(name="roomId") Long roomId){
-		QuestionResponseDto.CreateQuestionResultDto questionResponseDto = questionService.createQuestion(request,roomId);
-		return ResponseEntity.ok(questionResponseDto);
-	}
 
-	@DeleteMapping("/delete")
-	//@Operation(summary="질문 삭제 API")
-	public ResponseEntity<Void> removeQuestion (@RequestBody Long questionId){
-		questionService.deleteQuestion(questionId);
-		return ResponseEntity.noContent().build();
-	}
 
 	@GetMapping("/list/{roomId}")
 	@Operation(summary="질문 목록 조회 API")

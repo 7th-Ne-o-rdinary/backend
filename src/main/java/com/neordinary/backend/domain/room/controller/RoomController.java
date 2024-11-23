@@ -123,7 +123,25 @@ public class RoomController {
             description = "방 참가자 조회 성공",
             useReturnTypeSchema = true
     )
-    public List<ParticipantDto> getParticipants(@RequestParam("code") String code){
+    @ApiResponse(
+            responseCode = "404",
+            description = "방을 찾을 수 없음",
+            content = @Content(
+                    mediaType = "application/json",
+                    examples = @ExampleObject(
+                            value = """
+        {
+          "status": "NOT_FOUND",
+          "message": "1111 방을 찾을 수 없습니다."
+        }
+        """
+                    )
+            )
+    )
+    public List<ParticipantDto> getParticipants(
+            @RequestParam("code")
+            @Pattern(regexp = "^\\d{4}$", message = "code는 4자리 숫자여야 합니다")
+            String code){
         return roomService.getParticipants(code);
 	}
 
@@ -166,6 +184,21 @@ public class RoomController {
         {
           "status": "FORBIDDEN",
           "message": "권한이 없습니다."
+        }
+        """
+                    )
+            )
+    )
+    @ApiResponse(
+            responseCode = "404",
+            description = "방을 찾을 수 없음",
+            content = @Content(
+                    mediaType = "application/json",
+                    examples = @ExampleObject(
+                            value = """
+        {
+          "status": "NOT_FOUND",
+          "message": "1111 방을 찾을 수 없습니다."
         }
         """
                     )

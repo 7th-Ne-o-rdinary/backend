@@ -44,6 +44,8 @@ public class Question {
 	private Room room;
 
 
-
+    public void setRoom(Room room) {
+		this.room = room;
+    }
 
 }

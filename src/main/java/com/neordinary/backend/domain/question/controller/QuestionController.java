@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/question")
+@RequestMapping("api/v1/question")
 public class QuestionController {
 	private final QuestionService questionService;
 

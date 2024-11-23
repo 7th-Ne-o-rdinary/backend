@@ -4,9 +4,9 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.neordinary.backend.domain.participant.Entity.Participant;
+import com.neordinary.backend.domain.participant.entity.Participant;
 
 public interface ParticipantRepository extends JpaRepository<Participant,Long> {
-	@Override
-	Optional<Participant> findById(Long participant_id);
+
+	Optional<Participant> findByUserEmail(String email);
 }

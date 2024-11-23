@@ -8,9 +8,9 @@ import lombok.Setter;
 public class VoteRequestDto {
 	@Getter
 	@Setter
-	public class createVoteDto{
-		private Long votePeopleId;
-		private Long votedPeopleId;
+	public static class createVoteDto{
+		private String  votePeopleEmail;
+		private String votedPeopleEmail;
 		private Long questionId;
 
 

@@ -1,6 +1,6 @@
 package com.neordinary.backend.domain.vote.entity;
 
-import com.neordinary.backend.domain.participant.Entity.Participant;
+import com.neordinary.backend.domain.participant.entity.Participant;
 import com.neordinary.backend.domain.question.entity.Question;
 
 import jakarta.persistence.Entity;

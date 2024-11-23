@@ -1,8 +1,6 @@
 package com.neordinary.backend.domain.vote.converter;
 
-import java.util.Optional;
-
-import com.neordinary.backend.domain.participant.Entity.Participant;
+import com.neordinary.backend.domain.participant.entity.Participant;
 import com.neordinary.backend.domain.question.entity.Question;
 import com.neordinary.backend.domain.vote.dto.VoteResponseDto;
 import com.neordinary.backend.domain.vote.entity.Vote;

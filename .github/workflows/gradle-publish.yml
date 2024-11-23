@@ -27,7 +27,7 @@ jobs:
 
       - name: Create application.yml files
         run: |
-          echo "${{ secrets.APPLICATION_PROD_YML }}" > ${{ secrets.APPLICATION_PATH }}/application-prod.yml
+          echo "${{ secrets.APPLICATION_PROD_YML }}" > ${{ secrets.APPLICATION_PATH }}/application.yml
 
       - name: Build with Gradle Wrapper
         run: ./gradlew clean build -x test

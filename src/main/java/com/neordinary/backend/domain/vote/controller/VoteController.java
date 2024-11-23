@@ -64,21 +64,6 @@ public class VoteController {
 		description = "투표 성공",
 		useReturnTypeSchema = true
 	)
-	@ApiResponse(
-			responseCode = "400",
-			description = "아직 투표가 진행중입니다.",
-			content = @Content(
-					mediaType = MediaType.APPLICATION_JSON_VALUE,
-					schema = @Schema(implementation = ApiErrorResponse.class),
-					examples = @ExampleObject(value = """
-							{
-								"status": "BAD_REQUEST",
-								"message": "투표가 종료되지 않았습니다."
-							}
-							""")
-			)
-	)
-
 	public ResponseEntity<VoteResponseDto.createVoteResultDto> createVote (@CurrentUser User user, @RequestBody VoteRequestDto.createVoteDto request){
 		VoteResponseDto.createVoteResultDto createVoteResultDto = voteService.createVote(user, request);
 		return ResponseEntity.ok(createVoteResultDto);
@@ -97,19 +82,18 @@ public class VoteController {
 		useReturnTypeSchema = true
 	)
 	@ApiResponse(
-		responseCode = "400",
-		description = "잘못된 요청입니다",
-		content = @Content(
-			mediaType = MediaType.APPLICATION_JSON_VALUE,
-			schema = @Schema(implementation = ApiErrorResponse.class),
-			examples = @ExampleObject(value = """
-                            {
-                                "status": "BAD_REQUEST",
-                                "message": "잘못된 요청입니다."
-                            }
-                            """)
-		)
-
+			responseCode = "400",
+			description = "아직 투표가 진행중입니다.",
+			content = @Content(
+					mediaType = MediaType.APPLICATION_JSON_VALUE,
+					schema = @Schema(implementation = ApiErrorResponse.class),
+					examples = @ExampleObject(value = """
+							{
+								"status": "BAD_REQUEST",
+								"message": "투표가 종료되지 않았습니다."
+							}
+							""")
+			)
 	)
 	@ApiResponse(
 		responseCode = "404",

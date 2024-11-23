@@ -27,11 +27,10 @@ jobs:
 
       - name: Create application.yml files
         run: |
-          mkdir -p ${{ secrets.APPLICATION_PATH }}/yaml
-          echo "${{ secrets.APPLICATION_PROD_YML }}" > ${{ secrets.APPLICATION_PATH }}/yaml/application-prod.yml
+          echo "${{ secrets.APPLICATION_PROD_YML }}" > ${{ secrets.APPLICATION_PATH }}/application-prod.yml
 
       - name: Build with Gradle Wrapper
-        run: ./gradlew clean build -Pspring.profiles.active=test
+        run: ./gradlew clean build -x test
 
       - name: AWS credential
         uses: aws-actions/configure-aws-credentials@v4

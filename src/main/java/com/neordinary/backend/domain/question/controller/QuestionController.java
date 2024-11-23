@@ -22,7 +22,7 @@ public class QuestionController {
 
 	@PostMapping("/create/{roomId}")
 	//@Operation(summary="질문 생성 API")
-	public ResponseEntity<QuestionResponseDto.CreateQuestionResultDto> createQuestion(@RequestBody QuestionRequestDto request, @PathVariable(name=" roomId") Long roomId){
+	public ResponseEntity<QuestionResponseDto.CreateQuestionResultDto> createQuestion(@RequestBody QuestionRequestDto request, @PathVariable(name="roomId") Long roomId){
 		QuestionResponseDto.CreateQuestionResultDto questionResponseDto = questionService.createQuestion(request,roomId);
 		return ResponseEntity.ok(questionResponseDto);
 	}

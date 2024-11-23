@@ -14,7 +14,7 @@ public interface RoomService {
     void join(User user, String code);
 
     List<ParticipantDto> getParticipants(String code);
-  
+
     StartRoomDto start(User user, String code);
-  }
+  
 }

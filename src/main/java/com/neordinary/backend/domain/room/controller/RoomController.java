@@ -1,6 +1,7 @@
 package com.neordinary.backend.domain.room.controller;
 
 import com.neordinary.backend.domain.room.dto.RequestCreateRoom;
+import com.neordinary.backend.domain.room.dto.StartRoomDto;
 import com.neordinary.backend.domain.room.service.RoomService;
 import com.neordinary.backend.domain.user.domain.User;
 import com.neordinary.backend.global.jwt.CurrentUser;
@@ -34,6 +35,7 @@ public class RoomController {
                         
             - 방 생성 완료 시 
                 - 랜덤 생성된 방 고유 코드 반환 ex) 123456 
+                
             """)
     @PreAuthorize("isAuthenticated()")
     @SecurityRequirement(name = "access-token")
@@ -56,5 +58,20 @@ public class RoomController {
     public ResponseEntity<String> join(@CurrentUser User user, @RequestParam("code") String code){
         roomService.join(user, code);
         return ResponseEntity.ok(JOIN_SUCCESS_MESSAGE);
+    }
+
+    @PatchMapping
+    @Operation(summary = "방 시작", description = """
+            # 방 시작
+                        
+            ## 응답
+                        
+            - 방 이름 ex) 1번 시상식
+            , 방 상태 반환 ex) 진행 중
+            """)
+    @PreAuthorize("isAuthenticated()")
+    @SecurityRequirement(name = "access-token")
+    public StartRoomDto start(@CurrentUser User user, @RequestParam("code") String code){
+        return roomService.start(user, code);
     }
 }

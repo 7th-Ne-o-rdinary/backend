@@ -13,6 +13,7 @@ import com.neordinary.backend.domain.room.repository.RoomRepository;
 import com.neordinary.backend.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -22,12 +23,17 @@ import java.util.concurrent.ThreadLocalRandom;
 public class RoomServiceImpl implements RoomService {
 
     private static final String IN_PROGRESS = "진행 중";
+    private static final String IN_AVAILABLE_CODE = "유효하지 않은 코드: ";
+    private static final String STATUS = "시작 전";
+    private static final String FORBIDDEN_STATUS ="방에 참여할 수 없는 상태입니다: ";
 
     private final RoomRepository roomRepository;
     private final QuestionRepository questionRepository;
     private final ParticipantRepository participantRepository;
 
+
     @Override
+    @Transactional
     public RoomCodeDto create(User user, RequestCreateRoom requestCreateRoom) {
 
         Room room = requestCreateRoom.toEntity();
@@ -44,16 +50,19 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    @Transactional
     public void join(User user, String code) {
 
-        Room room = checkRoomCode(code);
+        Room room = checkRoomCodeAndStatus(code);
+
         Participant participant = mappingParticipant(user, room);
         participantRepository.save(participant);
     }
 
     @Override
+    @Transactional
     public StartRoomDto start(User user, String code) {
-        System.out.println(user.getEmail());
+
         Room room = checkRoomCode(code);
         validateChief(user, room);
         room.setStatus(IN_PROGRESS);
@@ -64,10 +73,24 @@ public class RoomServiceImpl implements RoomService {
                 .build();
     }
 
+
     private void validateChief(User user, Room room) {
         if (!room.getUser().getId().equals(user.getId())) {
             throw new IllegalArgumentException("권한이 없는 방입니다.");
         }
+    }
+
+    private Room checkRoomCode(String code) {
+        return roomRepository.findByCode(code)
+                .orElseThrow(() -> new IllegalArgumentException(IN_AVAILABLE_CODE + code));
+    }
+
+    private Room checkRoomCodeAndStatus(String code) {
+        Room room = checkRoomCode(code);
+        if (!STATUS.equals(room.getStatus())) {
+            throw new IllegalStateException(FORBIDDEN_STATUS + room.getStatus());
+        }
+        return room;
     }
 
     private String createAccountNum() {
@@ -75,13 +98,7 @@ public class RoomServiceImpl implements RoomService {
         while (roomRepository.findByCode(accountNum).isPresent()) {
             accountNum = Long.toString(ThreadLocalRandom.current().nextLong(1000L, 9999L));
         }
-
         return accountNum;
-    }
-
-    private Room checkRoomCode(String code) {
-        return roomRepository.findByCode(code)
-                .orElseThrow(() -> new IllegalArgumentException("유요하지 않은 코드: " + code));
     }
 
     private List<Question> mappingQuestion(List<RequestQuestion> questionsList, Room room) {

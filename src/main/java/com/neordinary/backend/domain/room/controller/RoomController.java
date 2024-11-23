@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/rooms")
 @RequiredArgsConstructor
 public class RoomController {
-
-    private static final String JOIN_SUCCESS_MESSAGE = "방참가 성공";
 
     private final RoomService roomService;
 
@@ -58,6 +55,7 @@ public class RoomController {
             ## 응답
                         
             - 방 참가 완료시 "방 참가 성공" 반환
+            - 방 참가 실패시 ex) "방에 참여할 수 없는 상태입니다: 진행 중"
             """)
     @ApiResponse(
             responseCode = "200",

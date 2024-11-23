@@ -1,21 +1,15 @@
 package com.neordinary.backend.domain.room.entity;
 
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 import com.neordinary.backend.domain.question.entity.Question;
-
-
-
 import com.neordinary.backend.domain.user.domain.User;
 
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -54,5 +48,8 @@ public class Room {
     public void setUser(User user) {
         this.user = user;
     }
-}
 
+    public void setStatus(String inProgress) {
+        this.status = inProgress;
+    }
+}

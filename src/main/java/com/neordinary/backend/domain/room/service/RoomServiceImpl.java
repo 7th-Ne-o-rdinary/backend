@@ -6,6 +6,7 @@ import com.neordinary.backend.domain.question.dto.RequestQuestion;
 import com.neordinary.backend.domain.question.entity.Question;
 import com.neordinary.backend.domain.question.repository.QuestionRepository;
 import com.neordinary.backend.domain.room.dto.RequestCreateRoom;
+import com.neordinary.backend.domain.room.dto.StartRoomDto;
 import com.neordinary.backend.domain.room.dto.RoomCodeDto;
 import com.neordinary.backend.domain.room.entity.Room;
 import com.neordinary.backend.domain.room.repository.RoomRepository;
@@ -19,6 +20,8 @@ import java.util.concurrent.ThreadLocalRandom;
 @Service
 @RequiredArgsConstructor
 public class RoomServiceImpl implements RoomService {
+
+    private static final String IN_PROGRESS = "진행 중";
 
     private final RoomRepository roomRepository;
     private final QuestionRepository questionRepository;
@@ -46,6 +49,25 @@ public class RoomServiceImpl implements RoomService {
         Room room = checkRoomCode(code);
         Participant participant = mappingParticipant(user, room);
         participantRepository.save(participant);
+    }
+
+    @Override
+    public StartRoomDto start(User user, String code) {
+        System.out.println(user.getEmail());
+        Room room = checkRoomCode(code);
+        validateChief(user, room);
+        room.setStatus(IN_PROGRESS);
+
+        return StartRoomDto.builder()
+                .name(room.getName())
+                .status(room.getStatus())
+                .build();
+    }
+
+    private void validateChief(User user, Room room) {
+        if (!room.getUser().getId().equals(user.getId())) {
+            throw new IllegalArgumentException("권한이 없는 방입니다.");
+        }
     }
 
     private String createAccountNum() {
